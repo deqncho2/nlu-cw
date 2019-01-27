@@ -38,7 +38,7 @@ class RNN(object):
 		'''
 		self.vocab_size = vocab_size
 		self.hidden_dims = hidden_dims
-		self.out_vocab_size = out_vocab_size 
+		self.out_vocab_size = out_vocab_size
 		
 		# matrices V (input -> hidden), W (hidden -> output), U (hidden -> hidden)
 		self.U = np.random.randn(self.hidden_dims, self.hidden_dims)*np.sqrt(0.1)
@@ -90,7 +90,10 @@ class RNN(object):
 			##########################
 			# --- your code here --- #
 			##########################
-		
+			word = make_onehot(x[t], self.vocab_size)
+			s[t] = sigmoid(np.dot(word,self.V.T) + np.dot(s[t-1], self.U.T))
+			y[t] = softmax(np.dot(s[t],self.W.T))
+
 		return y, s
 	
 	def acc_deltas(self, x, d, y, s):
@@ -109,11 +112,11 @@ class RNN(object):
 		
 		no return values
 		'''
-		
-		for t in reversed(range(len(x))):
-			##########################
-			# --- your code here --- #
-			##########################
+		pass
+		# for t in reversed(range(len(x))):
+		# 	##########################
+		# 	# --- your code here --- #
+		# 	##########################
 
 
 	def acc_deltas_np(self, x, d, y, s):
@@ -137,7 +140,7 @@ class RNN(object):
 		##########################
 		# --- your code here --- #
 		##########################
-		
+		pass
 		
 	def acc_deltas_bptt(self, x, d, y, s, steps):
 		'''
@@ -156,12 +159,12 @@ class RNN(object):
 		
 		no return values
 		'''
-		for t in reversed(range(len(x))):
-			# print("time {0}".format(t))
-			##########################
-			# --- your code here --- #
-			##########################
-
+		# for t in reversed(range(len(x))):
+		# 	# print("time {0}".format(t))
+		# 	##########################
+		# 	# --- your code here --- #
+		# 	##########################
+		pass
 
 	def acc_deltas_bptt_np(self, x, d, y, s, steps):
 		'''
@@ -185,7 +188,7 @@ class RNN(object):
 		##########################
 		# --- your code here --- #
 		##########################
-
+		pass
 
 	def compute_loss(self, x, d):
 		'''
@@ -198,14 +201,14 @@ class RNN(object):
 		
 		return loss		the combined loss for all words
 		'''
+		pass
+		# loss = 0.
 		
-		loss = 0.
+		# ##########################
+		# # --- your code here --- #
+		# ##########################
 		
-		##########################
-		# --- your code here --- #
-		##########################
-		
-		return loss
+		# return loss
 
 
 	def compute_loss_np(self, x, d):
@@ -219,14 +222,14 @@ class RNN(object):
 		
 		return loss		we only take the prediction from the last time step
 		'''
+		pass
+		# loss = 0.
 		
-		loss = 0.
+		# ##########################
+		# # --- your code here --- #
+		# ##########################
 		
-		##########################
-		# --- your code here --- #
-		##########################
-		
-		return loss
+		# return loss
 
 
 	def compute_acc_np(self, x, d):
@@ -244,8 +247,8 @@ class RNN(object):
 		##########################
 		# --- your code here --- #
 		##########################
-		
-		return 0
+		pass
+		#return 0
 
 
 	def compare_num_pred(self, x, d):
@@ -263,8 +266,8 @@ class RNN(object):
 		# --- your code here --- #
 		##########################
 		
-		return 0
-
+		#return 0
+		pass
 
 	def compute_acc_lmnp(self, X_dev, D_dev):
 		'''
@@ -274,9 +277,9 @@ class RNN(object):
 		X_dev			a list of input vectors, e.g., 		[[5, 4, 2], [7, 3, 8]]
 		D_dev			a list of pair verb forms (plural/singular), e.g., 	[[4, 9], [6, 5]]
 		'''
-		acc = sum([self.compare_num_pred(X_dev[i], D_dev[i]) for i in range(len(X_dev))]) / len(X_dev)
-
-		return acc
+		# acc = sum([self.compare_num_pred(X_dev[i], D_dev[i]) for i in range(len(X_dev))]) / len(X_dev)
+		pass
+		# return acc
 
 		
 	def compute_mean_loss(self, X, D):
@@ -289,13 +292,13 @@ class RNN(object):
 		return mean_loss		average loss over all words in D
 		'''
 		
-		mean_loss = 0.
+		#mean_loss = 0.
 		
 		##########################
 		# --- your code here --- #
 		##########################
-		
-		return mean_loss
+		pass
+		#return mean_loss
 	
 		
 	def train(self, X, D, X_dev, D_dev, epochs=10, learning_rate=0.5, anneal=5, back_steps=0, batch_size=100, min_change=0.0001, log=True):
@@ -588,55 +591,55 @@ if __name__ == "__main__":
 	data_folder = sys.argv[2]
 	np.random.seed(2018)
 	
-	if mode == "train-lm":
-		'''
-		code for training language model.
-		change this to different values, or use it to get you started with your own testing class
-		'''
-		train_size = 1000
-		dev_size = 1000
-		vocab_size = 2000
+	# if mode == "train-lm":
+	# 	'''
+	# 	code for training language model.
+	# 	change this to different values, or use it to get you started with your own testing class
+	# 	'''
+	# 	train_size = 1000
+	# 	dev_size = 1000
+	# 	vocab_size = 2000
 		
-		hdim = int(sys.argv[3])
-		lookback = int(sys.argv[4])
-		lr = float(sys.argv[5])
+	# 	hdim = int(sys.argv[3])
+	# 	lookback = int(sys.argv[4])
+	# 	lr = float(sys.argv[5])
 		
-		# get the data set vocabulary
-		vocab = pd.read_table(data_folder + "/vocab.wiki.txt", header=None, sep="\s+", index_col=0, names=['count', 'freq'], )
-		num_to_word = dict(enumerate(vocab.index[:vocab_size]))
-		word_to_num = invert_dict(num_to_word)
+	# 	# get the data set vocabulary
+	# 	vocab = pd.read_table(data_folder + "/vocab.wiki.txt", header=None, sep="\s+", index_col=0, names=['count', 'freq'], )
+	# 	num_to_word = dict(enumerate(vocab.index[:vocab_size]))
+	# 	word_to_num = invert_dict(num_to_word)
 		
-		# calculate loss vocabulary words due to vocab_size
-		fraction_lost = fraq_loss(vocab, word_to_num, vocab_size)
-		print("Retained %d words from %d (%.02f%% of all tokens)\n" % (vocab_size, len(vocab), 100*(1-fraction_lost)))
+	# 	# calculate loss vocabulary words due to vocab_size
+	# 	fraction_lost = fraq_loss(vocab, word_to_num, vocab_size)
+	# 	print("Retained %d words from %d (%.02f%% of all tokens)\n" % (vocab_size, len(vocab), 100*(1-fraction_lost)))
 		
-		docs = load_lm_dataset(data_folder + '/wiki-train.txt')
-		S_train = docs_to_indices(docs, word_to_num, 1, 1)
-		X_train, D_train = seqs_to_lmXY(S_train)
+	# 	docs = load_lm_dataset(data_folder + '/wiki-train.txt')
+	# 	S_train = docs_to_indices(docs, word_to_num, 1, 1)
+	# 	X_train, D_train = seqs_to_lmXY(S_train)
 
-		# Load the dev set (for tuning hyperparameters)
-		docs = load_lm_dataset(data_folder + '/wiki-dev.txt')
-		S_dev = docs_to_indices(docs, word_to_num, 1, 1)
-		X_dev, D_dev = seqs_to_lmXY(S_dev)
+	# 	# Load the dev set (for tuning hyperparameters)
+	# 	docs = load_lm_dataset(data_folder + '/wiki-dev.txt')
+	# 	S_dev = docs_to_indices(docs, word_to_num, 1, 1)
+	# 	X_dev, D_dev = seqs_to_lmXY(S_dev)
 		
-		X_train = X_train[:train_size]
-		D_train = D_train[:train_size]
-		X_dev = X_dev[:dev_size]
-		D_dev = D_dev[:dev_size]
+	# 	X_train = X_train[:train_size]
+	# 	D_train = D_train[:train_size]
+	# 	X_dev = X_dev[:dev_size]
+	# 	D_dev = D_dev[:dev_size]
 
-		# q = best unigram frequency from omitted vocab
-		# this is the best expected loss out of that set
-		q = vocab.freq[vocab_size] / sum(vocab.freq[vocab_size:])
+	# 	# q = best unigram frequency from omitted vocab
+	# 	# this is the best expected loss out of that set
+	# 	q = vocab.freq[vocab_size] / sum(vocab.freq[vocab_size:])
 		
-		##########################
-		# --- your code here --- #
-		##########################
+	# 	##########################
+	# 	# --- your code here --- #
+	# 	##########################
 		
-		run_loss = -1
-	    adjusted_loss = -1
+	# 	run_loss = -1
+	#     adjusted_loss = -1
 
-	    print("Unadjusted: %.03f" % np.exp(run_loss))
-	    print("Adjusted for missing vocab: %.03f" % np.exp(adjusted_loss))
+	#     print("Unadjusted: %.03f" % np.exp(run_loss))
+	#     print("Adjusted for missing vocab: %.03f" % np.exp(adjusted_loss))
 
 
 	if mode == "train-np":
