@@ -200,16 +200,18 @@ class RNN(object):
 		d		list of words, as indices, e.g.: [4, 2, 3]
 		
 		return loss		the combined loss for all words
-		'''
-		pass
-		# loss = 0.
-		
+		'''		
 		# ##########################
 		# # --- your code here --- #
 		# ##########################
 		
 		# return loss
-
+		y  = np.log(self.predict(x)[0])
+		d_mat = np.zeros(y.shape)
+		for i, r in enumerate(d_mat):
+			r[d[i]] = 1
+		loss = -np.sum(np.multiply(y,d_mat))
+		return loss
 
 	def compute_loss_np(self, x, d):
 		'''
@@ -292,13 +294,18 @@ class RNN(object):
 		return mean_loss		average loss over all words in D
 		'''
 		
-		#mean_loss = 0.
-		
+		mean_loss = 0.
+		num_words = 0
+
 		##########################
 		# --- your code here --- #
 		##########################
-		pass
-		#return mean_loss
+		for i, s in enumerate(X):
+			mean_loss += self.compute_loss(s, D[i])
+			num_words += len(D[i])
+		
+		mean_loss /= num_words
+		return mean_loss
 	
 		
 	def train(self, X, D, X_dev, D_dev, epochs=10, learning_rate=0.5, anneal=5, back_steps=0, batch_size=100, min_change=0.0001, log=True):

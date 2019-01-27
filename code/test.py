@@ -94,6 +94,7 @@ loss2 = r.compute_loss(x2,d2)
 loss3 = r.compute_loss(x3,d3)
 mean_loss = r.compute_mean_loss([x,x2,x3],[d,d2,d3])
 if not np.isclose(loss_expected, loss, rtol=1e-08, atol=1e-08) or not np.isclose(loss2_expected, loss2, rtol=1e-08, atol=1e-08) or not np.isclose(loss3_expected, loss3, rtol=1e-08, atol=1e-08):
+	print(loss_expected)
 	print("loss expected: {0}".format(loss_expected))
 	print("loss received: {0}".format(loss))
 	print("loss2 expected: {0}".format(loss2_expected))
