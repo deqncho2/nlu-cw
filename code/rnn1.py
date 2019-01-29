@@ -128,22 +128,14 @@ class RNN(object):
 		for t in reversed(range(len(x))):
 			#delta W
 			d_out = d_vector[t] - y[t]
-			# print("d_out shape: ",(d_out[np.newaxis]).T.shape)
-			# break
-
-			# self.deltaW += np.multiply(d_out.reshape(3,1), s[t].reshape(1,2)) #working
-
 			self.deltaW += np.multiply((d_out[np.newaxis]).T, s[t][np.newaxis])
 
 			#delta V
 			f = np.multiply(s[t], 1-s[t])
 			d_in = self.W.T.dot(d_out) * f
-			# self.deltaV += np.multiply(d_in.reshape(2,1), x_vector[t].reshape(1,3)) #working
 			self.deltaV += np.multiply((d_in[np.newaxis]).T, x_vector[t][np.newaxis])
 
 			#delta U
-			print((s[t-1][np.newaxis]).shape)
-			# self.deltaU += np.multiply(d_in.reshape(2,1), s[t-1].reshape(1,2)) #working
 			self.deltaU += np.multiply((d_in[np.newaxis]).T, s[t-1][np.newaxis])			
 			
 
@@ -196,22 +188,22 @@ class RNN(object):
 			print("time {0}".format(t))
 			#delta W
 			d_out = d_vector[t] - y[t]
-			self.deltaW += np.multiply(d_out.reshape(3,1), s[t].reshape(1,2))
+			self.deltaW += np.multiply((d_out[np.newaxis]).T, s[t][np.newaxis])
 
 			#initial update for delta_V and delta_U
 			d_in = self.W.T.dot(d_out) * (np.multiply(s[t], 1-s[t]))
-			self.deltaV += np.multiply(d_in.reshape(2,1), x_vector[t].reshape(1,3))
-			self.deltaU += np.multiply(d_in.reshape(2,1), s[t-1].reshape(1,2))			
+			self.deltaV += np.multiply((d_in[np.newaxis]).T, x_vector[t][np.newaxis])
+			self.deltaU += np.multiply((d_in[np.newaxis]).T, s[t-1][np.newaxis])			
 
 			for taf in range(1,steps+1):
 
 				d_in = self.U.T.dot(d_in) * (np.multiply(s[t-taf], 1-s[t-taf]))
 
 				#delta V				
-				self.deltaV += np.multiply(d_in.reshape(2,1), x_vector[t-taf].reshape(1,3))
+				self.deltaV += np.multiply((d_in[np.newaxis]).T, x_vector[t-taf][np.newaxis])
 
 				#delta U
-				self.deltaU += np.multiply(d_in.reshape(2,1), s[t-taf-1].reshape(1,2))
+				self.deltaU += np.multiply((d_in[np.newaxis]).T, s[t-taf-1][np.newaxis])
 
 	def acc_deltas_bptt_np(self, x, d, y, s, steps):
 		'''
