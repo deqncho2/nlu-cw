@@ -1,0 +1,1 @@
+hidden dims: 25 lookback: 0 learning-rate: 0.5 loss: 660.461576260743 adjusted loss: 1170.8439006206436
