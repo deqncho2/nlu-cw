@@ -20,6 +20,8 @@ lowest_loss = 100000
 
 file_q2a = open("q2a.txt", "w")
 
+counter = 0
+
 for hiddendims in hdim:
     for lookb in lookback:
         for learnrate in lr:
@@ -30,7 +32,7 @@ for hiddendims in hdim:
 
             # calculate loss vocabulary words due to vocab_size
             fraction_lost = fraq_loss(vocab, word_to_num, vocab_size)
-            print("Retained %d words from %d (%.02f%% of all tokens)\n" % (vocab_size, len(vocab), 100*(1-fraction_lost)))
+            # print("Retained %d words from %d (%.02f%% of all tokens)\n" % (vocab_size, len(vocab), 100*(1-fraction_lost)))
 
             docs = load_lm_dataset(data_folder + '/wiki-train.txt')
             S_train = docs_to_indices(docs, word_to_num, 1, 1)
@@ -52,17 +54,20 @@ for hiddendims in hdim:
 
             ##########################
             r = RNN(vocab_size, hiddendims, vocab_size)
-            run_loss = r.train(X_train, D_train, X_dev, D_dev, epochs=epoch_number, learning_rate=learnrate, back_steps=lookb)
+            run_loss = r.train(X_train, D_train, X_dev, D_dev, epochs=epoch_number, learning_rate=learnrate, back_steps=lookb, log=False)
 
             ##########################
 
             # run_loss = -1
             adjusted_loss = adjust_loss(run_loss, fraction_lost, q)
 
-            print("Unadjusted: %.03f" % np.exp(run_loss))
-            print("Adjusted for missing vocab: %.03f" % np.exp(adjusted_loss))
+            # print("Unadjusted: %.03f" % np.exp(run_loss))
+            # print("Adjusted for missing vocab: %.03f" % np.exp(adjusted_loss))
 
             file_q2a.write("hidden dims: " + str(hiddendims) + " lookback: " + str(lookb) + " learning-rate: " + str(learnrate) + " loss: " + str(np.exp(run_loss)) + " adjusted loss: " + str(np.exp(adjusted_loss)) + "\n")
+            
+            counter += 1
+            print("counter ", counter)
 
             if np.exp(adjusted_loss)<lowest_loss:
                 best_hdim=hiddendims

@@ -1,23 +1,14 @@
-hidden dims: 25 lookback: 0 learning-rate: 0.05 loss: 7.305273298434125 adjusted loss: 2936.3066061207865
-hidden dims: 25 lookback: 0 learning-rate: 0.1 loss: 7.226959827776516 adjusted loss: 2687.2400794790055
-hidden dims: 25 lookback: 0 learning-rate: 0.5 loss: 5.9537192650092186 adjusted loss: 635.983611304328
-hidden dims: 25 lookback: 2 learning-rate: 0.05 loss: 7.567803784108603 adjusted loss: 3952.283471835572
-hidden dims: 25 lookback: 2 learning-rate: 0.1 loss: 7.3565346234343725 adjusted loss: 3111.7082556159467
-hidden dims: 25 lookback: 2 learning-rate: 0.5 loss: 6.138755629055863 adjusted loss: 784.1523078212089
-hidden dims: 25 lookback: 5 learning-rate: 0.05 loss: 7.514052669321847 adjusted loss: 3719.0049961148816
-hidden dims: 25 lookback: 5 learning-rate: 0.1 loss: 7.08170198034667 adjusted loss: 2279.843683908345
-hidden dims: 25 lookback: 5 learning-rate: 0.5 loss: 6.2978137473548745 adjusted loss: 938.8264922427102
-hidden dims: 50 lookback: 0 learning-rate: 0.05 loss: 7.549934968625736 adjusted loss: 3873.153256798615
-hidden dims: 50 lookback: 0 learning-rate: 0.1 loss: 7.030440037565405 adjusted loss: 2151.3313071886923
-hidden dims: 50 lookback: 0 learning-rate: 0.5 loss: 7.953091766618739 adjusted loss: 6112.742976421722
-hidden dims: 50 lookback: 2 learning-rate: 0.05 loss: 7.484267751090289 adjusted loss: 3595.721155140341
-hidden dims: 50 lookback: 2 learning-rate: 0.1 loss: 6.953962069694111 adjusted loss: 1972.9432964924242
-hidden dims: 50 lookback: 2 learning-rate: 0.5 loss: 6.517962555348575 adjusted loss: 1204.4792842363438
-hidden dims: 50 lookback: 5 learning-rate: 0.05 loss: 7.52606438753727 adjusted loss: 3769.911141546739
-hidden dims: 50 lookback: 5 learning-rate: 0.1 loss: 6.7377318990433 adjusted loss: 1544.6383326608077
-hidden dims: 50 lookback: 5 learning-rate: 0.5 loss: 8.318340054555232 adjusted loss: 9242.16432642374
-
- BEST MODEL
-Best hidden dims: 25
-Best lookback: 0
-Best learning_rate: 0.5
+hidden dims: 25 lookback: 0 learning-rate: 0.05 loss: 223.11281017337058 adjusted loss: 342.79894025550834
+hidden dims: 25 lookback: 0 learning-rate: 0.1 loss: 185.5627853561726 adjusted loss: 278.26249950409704
+hidden dims: 25 lookback: 0 learning-rate: 0.5 loss: 139.22984848109553 adjusted loss: 201.02437184214372
+hidden dims: 25 lookback: 2 learning-rate: 0.05 loss: 215.6027857606894 adjusted loss: 329.7683264013053
+hidden dims: 25 lookback: 2 learning-rate: 0.1 loss: 177.62661629541907 adjusted loss: 264.8312650965936
+hidden dims: 25 lookback: 2 learning-rate: 0.5 loss: 140.478638123582 adjusted loss: 203.06631888684797
+hidden dims: 25 lookback: 5 learning-rate: 0.05 loss: 214.02445412834982 adjusted loss: 327.0373021045077
+hidden dims: 25 lookback: 5 learning-rate: 0.1 loss: 185.9233449406947 adjusted loss: 278.8745386912255
+hidden dims: 25 lookback: 5 learning-rate: 0.5 loss: 144.8962091253844 adjusted loss: 210.30876357683533
+hidden dims: 50 lookback: 0 learning-rate: 0.05 loss: 201.60327617755348 adjusted loss: 305.63866758909484
+hidden dims: 50 lookback: 0 learning-rate: 0.1 loss: 166.0108089672086 adjusted loss: 245.31572509879865
+hidden dims: 50 lookback: 0 learning-rate: 0.5 loss: 145.37962023441483 adjusted loss: 211.10308298704723
+hidden dims: 50 lookback: 2 learning-rate: 0.05 loss: 199.9219242380677 adjusted loss: 302.75521547689294
+hidden dims: 50 lookback: 2 learning-rate: 0.1 loss: 167.3892368791912 adjusted loss: 247.6224348072649

@@ -74,10 +74,10 @@ class RNN(object):
 	def sigmoid(self, x):
 		return 1 / (1 + np.exp(-x))
 	
-	def one_hot_vector(self, x):
+	def one_hot_vector(self, x, size):
 		x_vector = []
 		for w in x:
-			v = np.zeros(self.vocab_size)
+			v = np.zeros(size)
 			v[w]=1
 			x_vector.append(v)
 		return x_vector
@@ -95,9 +95,9 @@ class RNN(object):
 		'''
 
 		s = np.zeros((len(x) + 1, self.hidden_dims))
-		y = np.zeros((len(x), self.vocab_size))
+		y = np.zeros((len(x), self.out_vocab_size))
 
-		x_vector = self.one_hot_vector(x)
+		x_vector = self.one_hot_vector(x, self.vocab_size)
 
 		for t in range(len(x)):
 			s[t] = sigmoid(np.dot(s[t-1], self.U.T) + np.dot(x_vector[t], self.V.T))
@@ -121,9 +121,8 @@ class RNN(object):
 		
 		no return values
 		'''
-		print("")
-		d_vector = self.one_hot_vector(d)
-		x_vector = self.one_hot_vector(x)
+		d_vector = self.one_hot_vector(d, self.out_vocab_size)
+		x_vector = self.one_hot_vector(x, self.vocab_size)
 
 		for t in reversed(range(len(x))):
 			#delta W
@@ -156,11 +155,20 @@ class RNN(object):
 		
 		no return values
 		'''
-		print("")
-		##########################
-		# --- your code here --- #
-		##########################
-		
+		d_vector = self.one_hot_vector(d, self.out_vocab_size)
+		x_vector = self.one_hot_vector(x, self.vocab_size)
+
+		# delta_W
+		d_out = d_vector - y[-1]
+		self.deltaW += np.multiply(d_out.T, s[len(s)-2][np.newaxis])
+
+		# delta_V
+		f = np.multiply(s[len(s)-2], 1-s[len(s)-2])
+		d_in = d_out.dot(self.W) * f
+		self.deltaV += np.multiply(d_in.T, x_vector[-1])
+
+		# delta_U
+		self.deltaU += np.multiply(d_in.T, s[len(s)-3])
 		
 	def acc_deltas_bptt(self, x, d, y, s, steps):
 		'''
@@ -179,13 +187,12 @@ class RNN(object):
 		
 		no return values
 		'''
-		print("")
 
-		d_vector = self.one_hot_vector(d)
-		x_vector = self.one_hot_vector(x)
+		d_vector = self.one_hot_vector(d, self.out_vocab_size)
+		x_vector = self.one_hot_vector(x, self.vocab_size)
 
 		for t in reversed(range(len(x))):
-			print("time {0}".format(t))
+			# print("time {0}".format(t))
 			#delta W
 			d_out = d_vector[t] - y[t]
 			self.deltaW += np.multiply((d_out[np.newaxis]).T, s[t][np.newaxis])
@@ -224,10 +231,27 @@ class RNN(object):
 		no return values
 		'''
 		
-		##########################
-		# --- your code here --- #
-		##########################
-		print("")
+		d_vector = self.one_hot_vector(d, self.out_vocab_size)
+		x_vector = self.one_hot_vector(x, self.vocab_size)
+
+		#delta W
+		d_out = d_vector - y[-1]
+		self.deltaW += np.multiply(d_out.T, s[-2])
+
+		#initial update for delta_V and delta_U
+		d_in = d_out.dot(self.W) * (np.multiply(s[-2], 1-s[-2]))
+		self.deltaV += np.multiply(d_in.T, x_vector[-1])
+		self.deltaU += np.multiply(d_in.T, s[-3])
+
+		for taf in range(1,steps+1):
+
+			d_in = d_in.dot(self.U) * (np.multiply(s[len(s)-2-taf], 1-s[len(s)-2-taf]))
+
+		# 	#delta V				
+			self.deltaV += np.multiply(d_in.T, x_vector[len(x)-1-taf])
+
+		# 	#delta U
+			self.deltaU += np.multiply(d_in.T, s[len(s)-2-taf-1])
 
 
 	def compute_loss(self, x, d):
@@ -247,7 +271,7 @@ class RNN(object):
 		y,s = self.predict(x)
 		y = np.log(y)
 
-		a = np.multiply(y,self.one_hot_vector(d))
+		a = np.multiply(y,self.one_hot_vector(d, self.out_vocab_size))
 
 		loss = -sum(sum(a))
 
@@ -268,9 +292,9 @@ class RNN(object):
 		
 		loss = 0.
 		
-		##########################
-		# --- your code here --- #
-		##########################
+		y,s = self.predict(x)
+		y = np.log(y)
+		loss = -sum(sum(np.multiply(y[-1], self.one_hot_vector(d, self.out_vocab_size))))
 		
 		return loss
 
@@ -286,12 +310,14 @@ class RNN(object):
 		return 1 if argmax(y[t]) == d[0], 0 otherwise
 		'''
 		
-
-		##########################
-		# --- your code here --- #
-		##########################
+		## NOT SURE IF CORRECT IMPLEMENTATION ###
+		y,s = self.predict(x)
+		d_vector = self.one_hot_vector(d,self.out_vocab_size)
 		
-		return 0
+		if np.argmax(y[-1]) == d[0]:
+			return 1
+		else:
+			return 0
 
 
 	def compare_num_pred(self, x, d):
@@ -305,11 +331,14 @@ class RNN(object):
 		return 1 if p(d[0]) > p(d[1]), 0 otherwise
 		'''
 		
-		##########################
-		# --- your code here --- #
-		##########################
-		
-		return 0
+		## NOT SURE IF CORRECT IMPLEMENTATION ###
+		pd0 = self.compute_acc_np(x,[d[0]])
+		pd1 = self.compute_acc_np(x,[d[1]])
+
+		if pd0 > pd1:
+			return 1
+		else:
+			return 0
 
 
 	def compute_acc_lmnp(self, X_dev, D_dev):
@@ -676,7 +705,9 @@ if __name__ == "__main__":
 		
 		##########################
 		r = RNN(vocab_size, hdim, vocab_size)
-		r.train()
+		loss = r.train(X_train, D_train, X_dev, D_dev, epochs=10, learning_rate=lr, back_steps=lookback)
+
+		print("best loss: ", loss)
 		##########################
 		
 		run_loss = -1
