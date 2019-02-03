@@ -52,6 +52,7 @@ run_loss = r.train(X_train, D_train, X_dev, D_dev, epochs=epoch_number, learning
 ##########################
 
 # run_loss = -1
+mean_loss = r.compute_mean_loss(X_dev, D_dev)
 adjusted_loss = adjust_loss(run_loss, fraction_lost, q)
 
 print("Unadjusted: %.03f" % np.exp(run_loss))
@@ -59,7 +60,7 @@ print("Adjusted for missing vocab: %.03f" % np.exp(adjusted_loss))
 
 ##write results
 file_q2a = open("q2b.txt", "w")
-file_q2a.write("hidden dims: " + str(hdim) + " lookback: " + str(lookback) + " learning-rate: " + str(lr) + " loss: " + str(np.exp(run_loss)) + " adjusted loss: " + str(np.exp(adjusted_loss)) + "\n")
+file_q2a.write("hidden dims: " + str(hdim) + " lookback: " + str(lookback) + " learning-rate: " + str(lr) + " loss: " + str(np.exp(run_loss)) + " adjusted loss: " + str(np.exp(adjusted_loss)) + " mean loss: " + mean_loss + "\n")
 file_q2a.close()
 
 np.save("rnn.W", r.W)

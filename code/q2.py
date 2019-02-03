@@ -69,11 +69,17 @@ for hiddendims in hdim:
             counter += 1
             print("counter ", counter)
 
-            if np.exp(adjusted_loss)<lowest_loss:
+            # if np.exp(adjusted_loss)<lowest_loss:
+                # best_hdim=hiddendims
+                # best_lookback=lookb
+                # best_lr=learnrate
+                # lowest_loss=np.exp(adjusted_loss)
+
+            if run_loss<lowest_loss:
                 best_hdim=hiddendims
                 best_lookback=lookb
                 best_lr=learnrate
-                lowest_loss=np.exp(adjusted_loss)
+                lowest_loss=run_loss
 
 file_q2a.write("\n BEST MODEL" + "\n")
 file_q2a.write("Best hidden dims: "+ str(best_hdim) + "\n")
